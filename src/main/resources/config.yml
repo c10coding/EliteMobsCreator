@@ -1,0 +1,18 @@
+# Bosses stuff
+Name Bank:
+  - "Skeleton King"
+  - "Zombie King"
+  - "Creeper King"
+Timeout Min: 60
+Timeout Max: 360
+Number of Powers: 5
+
+Minimum Spawn Chance: 0.00005
+Maximum Spawn Chance: 0.001
+
+Minimum Health Multiplier: 1
+Maximum Health Multiplier: 2
+
+Minimum Damage Multiplier: 1
+Maximum Damage Multiplier: 2
+

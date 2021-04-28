@@ -1,0 +1,10 @@
+name: EliteMobsCreator
+version: ${project.version}
+main: net.dohaw.elitemobscreator.EMCPlugin
+api-version: 1.16
+
+commands:
+  elitemobscreator:
+    aliases:
+      - emc
+      - elitemc

@@ -8,16 +8,14 @@ import org.bukkit.enchantments.Enchantment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class EMCGenerator {
 
     private static List<Material> validMaterials;
 
-    public static void generateMob(BaseConfig config, FieldValuesConfig fvConfig) throws IOException {
+    public static void generateBoss(BaseConfig config, FieldValuesConfig fvConfig) throws IOException {
 
         ThreadLocalRandom current = ThreadLocalRandom.current();
 

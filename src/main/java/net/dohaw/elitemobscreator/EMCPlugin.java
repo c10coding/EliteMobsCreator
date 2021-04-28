@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * A plugin that generates randomly customized mob or item files for the plugin "EliteMobs"
+ * A plugin that generates randomly customized boss or item files for the plugin "EliteMobs"
  *
  * @author Caleb Owens (c10coding on Github)
  */

@@ -1,4 +1,4 @@
-# Bosses stuff
+# BOSS STUFF
 Name Bank:
   - "Skeleton King"
   - "Zombie King"
@@ -16,7 +16,7 @@ Maximum Health Multiplier: 2
 Minimum Damage Multiplier: 1
 Maximum Damage Multiplier: 2
 
-# Items stuff
+# ITEM STUFF BELOW HERE
 Minimum Number of Enchants: 1
 Maximum Number of Enchants: 4
 

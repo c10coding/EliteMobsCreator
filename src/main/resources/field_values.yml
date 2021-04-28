@@ -1,3 +1,6 @@
+# This file contains various field values that are already defined in the website generator.
+# The only time you should edit this file is either A. You want to add on to the entity types or B. The website supports more power files
+
 Entity Types: ZOMBIE, SKELETON, ZOMBIE_VILLAGER, HUSK, DROWNED, WITHER_SKELETON
 Powers:
   - attack_arrow.yml

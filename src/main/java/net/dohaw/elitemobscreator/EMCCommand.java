@@ -3,12 +3,8 @@ package net.dohaw.elitemobscreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class EMCCommand implements CommandExecutor {
 
@@ -21,7 +17,7 @@ public class EMCCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         try {
-            EMCGenerator.generateMobValues(plugin.getBaseConfig(), plugin.getFieldValueConfig());
+            EMCGenerator.generateItem(plugin.getBaseConfig());
         } catch (IOException e) {
             e.printStackTrace();
         }

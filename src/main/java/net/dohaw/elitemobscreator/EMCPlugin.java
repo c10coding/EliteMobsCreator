@@ -67,7 +67,7 @@ public final class EMCPlugin extends JavaPlugin {
     private boolean hasKeyWord(String materialName, boolean excluded){
 
         List<String> validKeyWords = Arrays.asList("axe", "sword", "helmet", "leggings", "chestplate", "boots");
-        List<String> excludedKeyWords = Arrays.asList("pickaxe", "turtle");
+        List<String> excludedKeyWords = Arrays.asList("pickaxe", "turtle", "diamond", "netherrite");
 
         List<String> loopedList = excluded ? excludedKeyWords : validKeyWords;
 

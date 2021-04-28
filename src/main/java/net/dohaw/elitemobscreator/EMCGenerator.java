@@ -46,16 +46,14 @@ public class EMCGenerator {
 
         File customBossesFolder = EMCPlugin.CUSTOM_BOSSES_FOLDER;
         File potentialDuplicateFile = new File(customBossesFolder, fileName);
+        // If a duplicate file is made, it adds a number at the end depending on how many duplicate files there are.
         if(potentialDuplicateFile.exists()){
-            System.out.println("In here");
             int numDuplicateFiles = getNumDuplicateFiles(customBossesFolder, fileName);
             fileName = fileName + "_" + numDuplicateFiles;
         }
 
         fileName += ".yml";
 
-        System.out.println("FILENAME: " + fileName);
-        System.out.println("PATH: " + potentialDuplicateFile.getAbsolutePath());
         File generatedFile = new File(customBossesFolder, fileName);
         generatedFile.createNewFile();
 

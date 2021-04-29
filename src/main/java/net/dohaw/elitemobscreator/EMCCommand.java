@@ -37,7 +37,7 @@ public class EMCCommand implements CommandExecutor {
                     sender.sendMessage(StringUtils.colorString("&cThere was an error while trying to create your item."));
                 }
 
-            }else if(args[0].equalsIgnoreCase("b") || args[0].equalsIgnoreCase("boss")){
+            }else if(args[0].equalsIgnoreCase("b") || args[0].equalsIgnoreCase("boss")) {
 
                 boolean generated;
                 try {
@@ -48,12 +48,15 @@ public class EMCCommand implements CommandExecutor {
                     generated = false;
                 }
 
-                if(generated){
+                if (generated) {
                     sender.sendMessage(StringUtils.colorString("&bYou have generated a new custom EliteMobs boss!"));
-                }else{
+                } else {
                     sender.sendMessage(StringUtils.colorString("&cThere was an error while trying to create your custom boss."));
                 }
-
+            }else if(args[0].equalsIgnoreCase("reload")){
+                plugin.getBaseConfig().reloadConfig();
+                plugin.getFieldValueConfig().reloadConfig();
+                sender.sendMessage(StringUtils.colorString("&aThe EliteMobsCreator configs have been reloaded!"));
             }else{
                 executed = false;
             }

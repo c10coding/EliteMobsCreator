@@ -7,6 +7,8 @@ import org.bukkit.enchantments.Enchantment;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,9 +40,9 @@ public class EMCGenerator {
         String fileName = StringUtils.removeChatColor(randomName);
         fileName = fileName.replaceAll(" ", "_");
 
-        double healthMultiplier = current.nextDouble(config.getMinHealthMultiplier(), config.getMaxHealthMultiplier());
-        double damageMultiplier = current.nextDouble(config.getMinDamageMultiplier(), config.getMaxDamageMultiplier());
-        double spawnChance = current.nextDouble(config.getMinSpawnChance(), config.getMaxSpawnChance());
+        double healthMultiplier = toFourDecimalPlaces(current.nextDouble(config.getMinHealthMultiplier(), config.getMaxHealthMultiplier()));
+        double damageMultiplier = toFourDecimalPlaces(current.nextDouble(config.getMinDamageMultiplier(), config.getMaxDamageMultiplier()));
+        double spawnChance = toFourDecimalPlaces(current.nextDouble(config.getMinSpawnChance(), config.getMaxSpawnChance()));
 
         File customBossesFolder = EMCPlugin.CUSTOM_BOSSES_FOLDER;
         File potentialDuplicateFile = new File(customBossesFolder, fileName);
@@ -164,6 +166,12 @@ public class EMCGenerator {
 
     public static void setValidMaterials(List<Material> validMaterials) {
         EMCGenerator.validMaterials = validMaterials;
+    }
+
+    public static double toFourDecimalPlaces(double dub){
+        BigDecimal bd = new BigDecimal(Double.toString(dub));
+        bd = bd.setScale(4, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 }

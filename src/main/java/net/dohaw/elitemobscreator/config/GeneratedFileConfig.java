@@ -1,4 +1,4 @@
-package net.dohaw.elitemobscreator;
+package net.dohaw.elitemobscreator.config;
 
 import net.dohaw.corelib.Config;
 

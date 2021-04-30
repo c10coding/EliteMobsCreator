@@ -1,6 +1,10 @@
 package net.dohaw.elitemobscreator;
 
 import net.dohaw.corelib.StringUtils;
+import net.dohaw.elitemobscreator.config.BaseConfig;
+import net.dohaw.elitemobscreator.config.FieldValuesConfig;
+import net.dohaw.elitemobscreator.config.GeneratedFileConfig;
+import net.dohaw.elitemobscreator.config.WordBanksConfig;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -84,7 +88,7 @@ public class EMCGenerator {
 
     }
 
-    public static void generateItem(BaseConfig config) throws IOException {
+    public static void generateItem(BaseConfig config, WordBanksConfig wbConfig) throws IOException {
 
         ThreadLocalRandom current = ThreadLocalRandom.current();
 
@@ -99,8 +103,13 @@ public class EMCGenerator {
             randomEnchantments.add(randomEnchantment.getName().toUpperCase() + "," + randomEnchantment.getMaxLevel());
         }
 
-        List<String> itemNameBank = config.getItemsNameBank();
-        String randomDisplayName = itemNameBank.get(current.nextInt(itemNameBank.size()));
+        String randomDisplayName = createRandomItemName(wbConfig, config.getNameFormats(), current);
+        if(randomDisplayName.contains("$itemType")){
+            String matStr = randomMaterial.toString().toLowerCase();
+            matStr = matStr.replace("_", " ");
+            matStr = matToProperString(matStr);
+            randomDisplayName = randomDisplayName.replace("$itemType", matStr);
+        }
 
         List<String> randomLore = new ArrayList<>();
         List<String> firstLineWordBank = config.getFirstLineLoreWordBank();
@@ -172,6 +181,67 @@ public class EMCGenerator {
         BigDecimal bd = new BigDecimal(Double.toString(dub));
         bd = bd.setScale(4, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    public static String createRandomItemName(WordBanksConfig wbConfig, List<String> nameFormats, ThreadLocalRandom current){
+
+        String randomNameFormat = nameFormats.get(current.nextInt(nameFormats.size()));
+        if(randomNameFormat.contains("$verb")){
+            List<String> verbs = wbConfig.getVerbs();
+            String randomVerb = verbs.get(current.nextInt(verbs.size()));
+            randomNameFormat = randomNameFormat.replace("$verb", randomVerb);
+        }
+
+        if(randomNameFormat.contains("$adjective")){
+            List<String> adjectives = wbConfig.getAdjectives();
+            String randomAdjective = adjectives.get(current.nextInt(adjectives.size()));
+            randomNameFormat = randomNameFormat.replace("$adjective", randomAdjective);
+        }
+
+        if(randomNameFormat.contains("$verber")){
+            List<String> verbers = wbConfig.getVerbers();
+            String randomVerber = verbers.get(current.nextInt(verbers.size()));
+            randomNameFormat = randomNameFormat.replace("$verber", randomVerber);
+        }
+
+        if(randomNameFormat.contains("$noun")) {
+            List<String> nouns = wbConfig.getNouns();
+            String randomVerber = nouns.get(current.nextInt(nouns.size()));
+            randomNameFormat = randomNameFormat.replace("$noun", randomVerber);
+        }
+
+        return randomNameFormat;
+
+    }
+
+    public static String matToProperString(String matStr){
+
+        // stores each characters to a char array
+        char[] charArray = matStr.toCharArray();
+        boolean foundSpace = true;
+
+        for(int i = 0; i < charArray.length; i++) {
+
+            // if the array element is a letter
+            if(Character.isLetter(charArray[i])) {
+
+                // check space is present before the letter
+                if(foundSpace) {
+
+                    // change the letter into uppercase
+                    charArray[i] = Character.toUpperCase(charArray[i]);
+                    foundSpace = false;
+                }
+            }
+
+            else {
+                // if the new character is not character
+                foundSpace = true;
+            }
+        }
+
+        return String.valueOf(charArray);
+
     }
 
 }

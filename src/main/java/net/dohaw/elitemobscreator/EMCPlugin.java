@@ -2,6 +2,9 @@ package net.dohaw.elitemobscreator;
 
 import net.dohaw.corelib.CoreLib;
 import net.dohaw.corelib.JPUtils;
+import net.dohaw.elitemobscreator.config.BaseConfig;
+import net.dohaw.elitemobscreator.config.FieldValuesConfig;
+import net.dohaw.elitemobscreator.config.WordBanksConfig;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,13 +25,15 @@ public final class EMCPlugin extends JavaPlugin {
 
     private FieldValuesConfig fvConfig;
     private BaseConfig baseConfig;
+    private WordBanksConfig wbConfig;
 
     @Override
     public void onEnable() {
         CoreLib.setInstance(this);
-        JPUtils.validateFiles("config.yml", "field_values.yml");
+        JPUtils.validateFiles("config.yml", "field_values.yml", "word_banks.yml");
         this.baseConfig = new BaseConfig();
         this.fvConfig = new FieldValuesConfig();
+        this.wbConfig = new WordBanksConfig();
         JPUtils.registerCommand("elitemobscreator", new EMCCommand(this));
         EMCGenerator.setValidMaterials(getValidMaterials());
     }
@@ -44,6 +49,10 @@ public final class EMCPlugin extends JavaPlugin {
 
     public FieldValuesConfig getFieldValueConfig(){
         return fvConfig;
+    }
+
+    public WordBanksConfig getWordBanksConfig(){
+        return wbConfig;
     }
 
     private List<Material> getValidMaterials(){

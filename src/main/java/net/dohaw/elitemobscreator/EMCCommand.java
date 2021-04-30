@@ -24,7 +24,7 @@ public class EMCCommand implements CommandExecutor {
 
                 boolean generated;
                 try {
-                    EMCGenerator.generateItem(plugin.getBaseConfig());
+                    EMCGenerator.generateItem(plugin.getBaseConfig(), plugin.getWordBanksConfig());
                     generated = true;
                 } catch (IOException e) {
                     e.printStackTrace();

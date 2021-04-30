@@ -16,14 +16,21 @@ Maximum Health Multiplier: 2
 Minimum Damage Multiplier: 1
 Maximum Damage Multiplier: 2
 
+Excluded Armor Materials:
+
 # ITEM STUFF BELOW HERE
 Minimum Number of Enchants: 1
 Maximum Number of Enchants: 4
 
-Display Name Bank:
-  - "Item name here"
-  - "Another item name here"
-  - "Third Item Name Here"
+Display Name:
+  Name Formats:
+    - "$verb $itemType of the $adjective $noun"
+    - "$itemType of the $adjective $noun"
+    - "$noun's $adjective $verb $itemType"
+    - "$verb $itemType"
+    - "$adjective $verb $itemType"
+    - "The $verber"
+    - "The $adjective $verber"
 
 Lore Banks:
   First Line Word Bank:
@@ -37,9 +44,4 @@ Lore Banks:
   Third Line Word Bank:
     - "Yo im a third line lore"
     - "Yo i am still a third line lore"
-
-Display Name Word Bank:
-  - "OP Item"
-  - "Another OP Item"
-  - "Third OP Item"
 

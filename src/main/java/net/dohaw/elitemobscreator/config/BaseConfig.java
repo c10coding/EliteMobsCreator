@@ -1,4 +1,4 @@
-package net.dohaw.elitemobscreator;
+package net.dohaw.elitemobscreator.config;
 
 import net.dohaw.corelib.Config;
 
@@ -58,8 +58,8 @@ public class BaseConfig extends Config {
         return config.getInt("Maximum Number of Enchants");
     }
 
-    public List<String> getItemsNameBank(){
-        return config.getStringList("Display Name Bank");
+    public List<String> getNameFormats(){
+        return config.getStringList("Display Name.Name Formats");
     }
 
     public List<String> getFirstLineLoreWordBank(){

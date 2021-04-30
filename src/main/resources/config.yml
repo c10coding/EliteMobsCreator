@@ -17,6 +17,11 @@ Minimum Damage Multiplier: 1
 Maximum Damage Multiplier: 2
 
 Excluded Armor Materials:
+  - NETHERITE_HELMET
+  - NETHERITE_CHESTPLATE
+  - NETHERITE_BOOTS
+  - NETHERITE_LEGGINGS
+
 
 # ITEM STUFF BELOW HERE
 Minimum Number of Enchants: 1

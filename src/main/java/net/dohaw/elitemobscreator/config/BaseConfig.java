@@ -1,7 +1,9 @@
 package net.dohaw.elitemobscreator.config;
 
 import net.dohaw.corelib.Config;
+import org.bukkit.Material;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaseConfig extends Config {
@@ -72,6 +74,19 @@ public class BaseConfig extends Config {
 
     public List<String> getThirdLineLoreWordBank(){
         return config.getStringList("Lore Banks.Third Line Word Bank");
+    }
+
+    public List<Material> getExcludedBossArmorTypes(){
+        List<String> matStrs = config.getStringList("Excluded Armor Materials");
+        List<Material> excludedMaterials = new ArrayList<>();
+        for(String s : matStrs){
+            try{
+                excludedMaterials.add(Material.valueOf(s));
+            }catch(IllegalArgumentException e){
+                plugin.getLogger().warning(s + " is not a valid excluded material!");
+            }
+        }
+        return excludedMaterials;
     }
 
 }

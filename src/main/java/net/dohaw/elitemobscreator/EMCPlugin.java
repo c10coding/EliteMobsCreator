@@ -2,6 +2,7 @@ package net.dohaw.elitemobscreator;
 
 import net.dohaw.corelib.CoreLib;
 import net.dohaw.corelib.JPUtils;
+import net.dohaw.corelib.helpers.ItemStackHelper;
 import net.dohaw.elitemobscreator.config.BaseConfig;
 import net.dohaw.elitemobscreator.config.FieldValuesConfig;
 import net.dohaw.elitemobscreator.config.WordBanksConfig;
@@ -35,7 +36,8 @@ public final class EMCPlugin extends JavaPlugin {
         this.fvConfig = new FieldValuesConfig();
         this.wbConfig = new WordBanksConfig();
         JPUtils.registerCommand("elitemobscreator", new EMCCommand(this));
-        EMCGenerator.setValidMaterials(getValidMaterials());
+        EMCGenerator.setValidItemMaterials(getValidItemMaterials());
+        EMCGenerator.setValidBossArmorTypes(getValidBossArmorTypes());
     }
 
     @Override
@@ -55,7 +57,7 @@ public final class EMCPlugin extends JavaPlugin {
         return wbConfig;
     }
 
-    private List<Material> getValidMaterials(){
+    private List<Material> getValidItemMaterials(){
 
         List<Material> validMaterials = new ArrayList<>();
         for(Material mat : Material.values()){
@@ -67,6 +69,20 @@ public final class EMCPlugin extends JavaPlugin {
                 validMaterials.add(mat);
             }
 
+        }
+
+        return validMaterials;
+
+    }
+
+    private List<Material> getValidBossArmorTypes(){
+
+        List<Material> excludedArmor = baseConfig.getExcludedBossArmorTypes();
+        List<Material> validMaterials = new ArrayList<>();
+        for(Material mat : Material.values()){
+            if(ItemStackHelper.isArmor(mat) && !excludedArmor.contains(mat)){
+                validMaterials.add(mat);
+            }
         }
 
         return validMaterials;

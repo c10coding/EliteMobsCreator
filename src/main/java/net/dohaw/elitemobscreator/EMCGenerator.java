@@ -8,6 +8,7 @@ import net.dohaw.elitemobscreator.config.WordBanksConfig;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.inventory.InventoryType;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EMCGenerator {
 
-    private static List<Material> validMaterials;
+    private static List<Material> validItemMaterials;
+    private static List<Material> validBossArmorTypes;
 
     public static void generateBoss(BaseConfig config, FieldValuesConfig fvConfig) throws IOException {
 
@@ -47,6 +49,11 @@ public class EMCGenerator {
         double healthMultiplier = toFourDecimalPlaces(current.nextDouble(config.getMinHealthMultiplier(), config.getMaxHealthMultiplier()));
         double damageMultiplier = toFourDecimalPlaces(current.nextDouble(config.getMinDamageMultiplier(), config.getMaxDamageMultiplier()));
         double spawnChance = toFourDecimalPlaces(current.nextDouble(config.getMinSpawnChance(), config.getMaxSpawnChance()));
+
+        Material randomHelmet = getRandomArmorPiece(ArmorType.HELMET);
+        Material randomChestplate = getRandomArmorPiece(ArmorType.CHESTPLATE);
+        Material randomLeggings = getRandomArmorPiece(ArmorType.LEGGINGS);
+        Material randomBoots = getRandomArmorPiece(ArmorType.BOOTS);
 
         File customBossesFolder = EMCPlugin.CUSTOM_BOSSES_FOLDER;
         File potentialDuplicateFile = new File(customBossesFolder, fileName);
@@ -83,6 +90,10 @@ public class EMCGenerator {
         genConfig.set("announcementPriority", 1);
         genConfig.set("disguise", "");
         genConfig.set("frozen", false);
+        genConfig.set("chestplate", randomChestplate.name());
+        genConfig.set("leggings", randomLeggings.name());
+        genConfig.set("boots", randomBoots.name());
+        genConfig.set("helmet", randomHelmet.name());
 
         generatedConfig.saveConfig();
 
@@ -92,7 +103,7 @@ public class EMCGenerator {
 
         ThreadLocalRandom current = ThreadLocalRandom.current();
 
-        Material randomMaterial = validMaterials.get(current.nextInt(validMaterials.size()));
+        Material randomMaterial = validItemMaterials.get(current.nextInt(validItemMaterials.size()));
         
         int randomNumberEnchants = current.nextInt(config.getMinimumEnchants(), config.getMaximumEnchants());
         List<Enchantment> applicableEnchantments = getApplicableEnchantments(randomMaterial);
@@ -173,9 +184,7 @@ public class EMCGenerator {
         return applicableEnchantments;
     }
 
-    public static void setValidMaterials(List<Material> validMaterials) {
-        EMCGenerator.validMaterials = validMaterials;
-    }
+
 
     public static double toFourDecimalPlaces(double dub){
         BigDecimal bd = new BigDecimal(Double.toString(dub));
@@ -243,5 +252,27 @@ public class EMCGenerator {
         return String.valueOf(charArray);
 
     }
+
+    public static Material getRandomArmorPiece(ArmorType armorType){
+        String armorTypeStr = armorType.name();
+        List<Material> matchedArmorTypes = new ArrayList<>();
+        for(Material mat : validBossArmorTypes){
+            if(mat.name().contains(armorTypeStr)){
+                System.out.println("MAT: " + mat);
+                System.out.println("TYPE: " + armorTypeStr);
+                matchedArmorTypes.add(mat);
+            }
+        }
+        return matchedArmorTypes.get(ThreadLocalRandom.current().nextInt(matchedArmorTypes.size()));
+    }
+
+    public static void setValidItemMaterials(List<Material> validItemMaterials) {
+        EMCGenerator.validItemMaterials = validItemMaterials;
+    }
+
+    public static void setValidBossArmorTypes(List<Material> validBossArmorTypes) {
+        EMCGenerator.validBossArmorTypes = validBossArmorTypes;
+    }
+
 
 }

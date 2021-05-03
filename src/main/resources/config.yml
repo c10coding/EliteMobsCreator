@@ -16,11 +16,25 @@ Maximum Health Multiplier: 2
 Minimum Damage Multiplier: 1
 Maximum Damage Multiplier: 2
 
-Excluded Armor Materials:
+Excluded Boss Armor Materials:
   - NETHERITE_HELMET
   - NETHERITE_CHESTPLATE
   - NETHERITE_BOOTS
   - NETHERITE_LEGGINGS
+
+Excluded Main Hand Materials:
+  - NETHERITE_AXE
+  - NETHERITE_HOE
+  - NETHERITE_SWORD
+  - NETHERITE_PICKAXE
+  - NETHERITE_SHOVEL
+
+Excluded Off Hand Materials:
+  - NETHERITE_AXE
+  - NETHERITE_HOE
+  - NETHERITE_SWORD
+  - NETHERITE_PICKAXE
+  - NETHERITE_SHOVEL
 
 
 # ITEM STUFF BELOW HERE

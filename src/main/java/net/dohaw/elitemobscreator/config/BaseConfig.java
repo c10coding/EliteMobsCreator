@@ -8,6 +8,23 @@ import java.util.List;
 
 public class BaseConfig extends Config {
 
+    public enum ExclusionType{
+
+        BOSS_ARMOR("Excluded Boss Armor Materials"),
+        MAIN_HAND("Excluded Main Hand Materials"),
+        OFF_HAND("Excluded Off Hand Materials");
+
+        private String configKey;
+        ExclusionType(String key){
+            this.configKey = key;
+        }
+
+        public String getConfigKey() {
+            return configKey;
+        }
+
+    }
+
     public BaseConfig() {
         super("config.yml");
     }
@@ -76,8 +93,8 @@ public class BaseConfig extends Config {
         return config.getStringList("Lore Banks.Third Line Word Bank");
     }
 
-    public List<Material> getExcludedBossArmorTypes(){
-        List<String> matStrs = config.getStringList("Excluded Armor Materials");
+    public List<Material> getExcludedMaterials(ExclusionType type){
+        List<String> matStrs = config.getStringList(type.getConfigKey());
         List<Material> excludedMaterials = new ArrayList<>();
         for(String s : matStrs){
             try{

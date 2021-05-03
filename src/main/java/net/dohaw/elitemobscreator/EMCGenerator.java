@@ -8,7 +8,6 @@ import net.dohaw.elitemobscreator.config.WordBanksConfig;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.inventory.InventoryType;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +21,8 @@ public class EMCGenerator {
 
     private static List<Material> validItemMaterials;
     private static List<Material> validBossArmorTypes;
+    private static List<Material> validMainHandItems;
+    private static List<Material> validOffHandItems;
 
     public static void generateBoss(BaseConfig config, FieldValuesConfig fvConfig) throws IOException {
 
@@ -54,6 +55,9 @@ public class EMCGenerator {
         Material randomChestplate = getRandomArmorPiece(ArmorType.CHESTPLATE);
         Material randomLeggings = getRandomArmorPiece(ArmorType.LEGGINGS);
         Material randomBoots = getRandomArmorPiece(ArmorType.BOOTS);
+
+        Material randomMainHandMat = validMainHandItems.get(current.nextInt(validMainHandItems.size()));
+        Material randomOffHandMat = validOffHandItems.get(current.nextInt(validOffHandItems.size()));
 
         File customBossesFolder = EMCPlugin.CUSTOM_BOSSES_FOLDER;
         File potentialDuplicateFile = new File(customBossesFolder, fileName);
@@ -94,6 +98,8 @@ public class EMCGenerator {
         genConfig.set("leggings", randomLeggings.name());
         genConfig.set("boots", randomBoots.name());
         genConfig.set("helmet", randomHelmet.name());
+        genConfig.set("offHand", randomOffHandMat.name());
+        genConfig.set("mainHand", randomMainHandMat.name());
 
         generatedConfig.saveConfig();
 
@@ -258,8 +264,6 @@ public class EMCGenerator {
         List<Material> matchedArmorTypes = new ArrayList<>();
         for(Material mat : validBossArmorTypes){
             if(mat.name().contains(armorTypeStr)){
-                System.out.println("MAT: " + mat);
-                System.out.println("TYPE: " + armorTypeStr);
                 matchedArmorTypes.add(mat);
             }
         }
@@ -274,5 +278,12 @@ public class EMCGenerator {
         EMCGenerator.validBossArmorTypes = validBossArmorTypes;
     }
 
+    public static void setValidMainHandItems(List<Material> validMainHandItems) {
+        EMCGenerator.validMainHandItems = validMainHandItems;
+    }
+
+    public static void setValidOffHandItems(List<Material> validOffHandItems) {
+        EMCGenerator.validOffHandItems = validOffHandItems;
+    }
 
 }

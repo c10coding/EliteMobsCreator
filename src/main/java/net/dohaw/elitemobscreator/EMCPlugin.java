@@ -7,6 +7,7 @@ import net.dohaw.elitemobscreator.config.BaseConfig;
 import net.dohaw.elitemobscreator.config.FieldValuesConfig;
 import net.dohaw.elitemobscreator.config.WordBanksConfig;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -37,7 +38,9 @@ public final class EMCPlugin extends JavaPlugin {
         this.wbConfig = new WordBanksConfig();
         JPUtils.registerCommand("elitemobscreator", new EMCCommand(this));
         EMCGenerator.setValidItemMaterials(getValidItemMaterials());
-        EMCGenerator.setValidBossArmorTypes(getValidBossArmorTypes());
+        EMCGenerator.setValidBossArmorTypes(getValidMaterials(BaseConfig.ExclusionType.BOSS_ARMOR));
+        EMCGenerator.setValidMainHandItems(getValidMaterials(BaseConfig.ExclusionType.MAIN_HAND));
+        EMCGenerator.setValidOffHandItems(getValidMaterials(BaseConfig.ExclusionType.OFF_HAND));
     }
 
     @Override
@@ -75,14 +78,21 @@ public final class EMCPlugin extends JavaPlugin {
 
     }
 
-    private List<Material> getValidBossArmorTypes(){
+    private List<Material> getValidMaterials(BaseConfig.ExclusionType exclusionType){
 
-        List<Material> excludedArmor = baseConfig.getExcludedBossArmorTypes();
         List<Material> validMaterials = new ArrayList<>();
+        List<Material> excludedMaterials = baseConfig.getExcludedMaterials(exclusionType);
         for(Material mat : Material.values()){
-            if(ItemStackHelper.isArmor(mat) && !excludedArmor.contains(mat)){
-                validMaterials.add(mat);
+            if(exclusionType == BaseConfig.ExclusionType.MAIN_HAND || exclusionType == BaseConfig.ExclusionType.OFF_HAND){
+                if(ItemStackHelper.isToolOrWeapon(new ItemStack(mat)) && !excludedMaterials.contains(mat)){
+                    validMaterials.add(mat);
+                }
+            }else if(exclusionType == BaseConfig.ExclusionType.BOSS_ARMOR){
+                if(ItemStackHelper.isArmor(mat) && !excludedMaterials.contains(mat)){
+                    validMaterials.add(mat);
+                }
             }
+
         }
 
         return validMaterials;

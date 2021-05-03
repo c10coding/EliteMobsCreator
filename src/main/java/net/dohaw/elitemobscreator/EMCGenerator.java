@@ -1,5 +1,6 @@
 package net.dohaw.elitemobscreator;
 
+import net.dohaw.corelib.CoreLib;
 import net.dohaw.corelib.StringUtils;
 import net.dohaw.elitemobscreator.config.BaseConfig;
 import net.dohaw.elitemobscreator.config.FieldValuesConfig;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,12 +46,16 @@ public class EMCGenerator {
 
         String spawnMessage = StringUtils.colorString(randomName + "&c has spawned!");
 
-        String fileName = StringUtils.removeChatColor(randomName);
+        String fileName = StringUtils.removeChatColor(randomName).toLowerCase();
         fileName = fileName.replaceAll(" ", "_");
 
         double healthMultiplier = toFourDecimalPlaces(current.nextDouble(config.getMinHealthMultiplier(), config.getMaxHealthMultiplier()));
         double damageMultiplier = toFourDecimalPlaces(current.nextDouble(config.getMinDamageMultiplier(), config.getMaxDamageMultiplier()));
-        double spawnChance = toFourDecimalPlaces(current.nextDouble(config.getMinSpawnChance(), config.getMaxSpawnChance()));
+        double spawnChance = current.nextDouble(config.getMinSpawnChance(), config.getMaxSpawnChance());
+
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(4);
+        String spawnChanceStr = df.format(spawnChance);
 
         Material randomHelmet = getRandomArmorPiece(ArmorType.HELMET);
         Material randomChestplate = getRandomArmorPiece(ArmorType.CHESTPLATE);
@@ -60,7 +66,7 @@ public class EMCGenerator {
         Material randomOffHandMat = validOffHandItems.get(current.nextInt(validOffHandItems.size()));
 
         File customBossesFolder = EMCPlugin.CUSTOM_BOSSES_FOLDER;
-        File potentialDuplicateFile = new File(customBossesFolder, fileName);
+        File potentialDuplicateFile = new File(customBossesFolder, fileName + ".yml");
         // If a duplicate file is made, it adds a number at the end depending on how many duplicate files there are.
         if(potentialDuplicateFile.exists()){
             int numDuplicateFiles = getNumDuplicateFiles(customBossesFolder, fileName);
@@ -68,40 +74,48 @@ public class EMCGenerator {
         }
 
         fileName += ".yml";
+        fileName = fileName.toLowerCase();
 
         File generatedFile = new File(customBossesFolder, fileName);
-        generatedFile.createNewFile();
+        boolean isCreated = generatedFile.createNewFile();
 
-        GeneratedFileConfig generatedConfig = new GeneratedFileConfig(generatedFile);
-        FileConfiguration genConfig = generatedConfig.getConfig();
+        if(isCreated){
 
-        genConfig.set("entityType", randomEntityType);
-        genConfig.set("isEnabled", true);
-        genConfig.set("name", randomName);
-        genConfig.set("level", "dynamic");
-        genConfig.set("healthMultiplier", healthMultiplier);
-        genConfig.set("damageMultplier", damageMultiplier);
-        genConfig.set("timeout", timeout);
-        genConfig.set("isPersistent", true);
-        genConfig.set("isBaby", false);
-        genConfig.set("powers", randomPowers);
-        genConfig.set("spawnMessage", spawnMessage);
-        genConfig.set("deathMessage", "Some random death message");
-        genConfig.set("uniqueLootList", "");
-        genConfig.set("dropsEliteMobsLoot", true);
-        genConfig.set("dropsVanillaLoot", false);
-        genConfig.set("spawnChance", spawnChance);
-        genConfig.set("announcementPriority", 1);
-        genConfig.set("disguise", "");
-        genConfig.set("frozen", false);
-        genConfig.set("chestplate", randomChestplate.name());
-        genConfig.set("leggings", randomLeggings.name());
-        genConfig.set("boots", randomBoots.name());
-        genConfig.set("helmet", randomHelmet.name());
-        genConfig.set("offHand", randomOffHandMat.name());
-        genConfig.set("mainHand", randomMainHandMat.name());
+            GeneratedFileConfig generatedConfig = new GeneratedFileConfig(generatedFile);
+            FileConfiguration genConfig = generatedConfig.getConfig();
 
-        generatedConfig.saveConfig();
+            genConfig.set("entityType", randomEntityType);
+            genConfig.set("isEnabled", true);
+            genConfig.set("name", randomName);
+            genConfig.set("level", "dynamic");
+            genConfig.set("healthMultiplier", healthMultiplier);
+            genConfig.set("damageMultplier", damageMultiplier);
+            genConfig.set("timeout", timeout);
+            genConfig.set("isPersistent", true);
+            genConfig.set("isBaby", false);
+            genConfig.set("powers", randomPowers);
+            genConfig.set("spawnMessage", spawnMessage);
+            genConfig.set("deathMessage", "Some random death message");
+            genConfig.set("uniqueLootList", "");
+            genConfig.set("dropsEliteMobsLoot", true);
+            genConfig.set("dropsVanillaLoot", false);
+            genConfig.set("spawnChance", spawnChanceStr);
+            genConfig.set("announcementPriority", 1);
+            genConfig.set("disguise", "");
+            genConfig.set("frozen", false);
+            genConfig.set("chestplate", randomChestplate.name());
+            genConfig.set("leggings", randomLeggings.name());
+            genConfig.set("boots", randomBoots.name());
+            genConfig.set("helmet", randomHelmet.name());
+            genConfig.set("offHand", randomOffHandMat.name());
+            genConfig.set("mainHand", randomMainHandMat.name());
+
+            generatedConfig.saveConfig();
+
+        }else{
+            CoreLib.getInstance().getLogger().warning("There has been an error while trying to create the custom boss file!");
+        }
+
 
     }
 
@@ -138,11 +152,11 @@ public class EMCGenerator {
         randomLore.add(secondLineWordBank.get(current.nextInt(secondLineWordBank.size())));
         randomLore.add(thirdLineWorkBank.get(current.nextInt(thirdLineWorkBank.size())));
 
-        String fileName = StringUtils.removeChatColor(randomDisplayName);
+        String fileName = StringUtils.removeChatColor(randomDisplayName).toLowerCase();
         fileName = fileName.replaceAll(" ", "_");
 
         File customItemsFolder = EMCPlugin.CUSTOM_ITEMS_FOLDER;
-        File potentialDuplicateFile = new File(customItemsFolder, fileName);
+        File potentialDuplicateFile = new File(customItemsFolder, fileName + ".yml");
         if(potentialDuplicateFile.exists()){
             int numDuplicateFiles = getNumDuplicateFiles(customItemsFolder, fileName);
             fileName = fileName + "_" + numDuplicateFiles;
@@ -151,29 +165,35 @@ public class EMCGenerator {
         fileName += ".yml";
 
         File generatedFile = new File(customItemsFolder, fileName);
-        generatedFile.createNewFile();
+        boolean isCreated = generatedFile.createNewFile();
 
-        GeneratedFileConfig generatedConfig = new GeneratedFileConfig(generatedFile);
-        FileConfiguration genConfig = generatedConfig.getConfig();
+        if(isCreated){
 
-        genConfig.set("isEnabled", true);
-        genConfig.set("name", randomDisplayName);
-        genConfig.set("material", randomMaterial.toString());
-        genConfig.set("lore", randomLore);
-        genConfig.set("enchantments", randomEnchantments);
-        genConfig.set("potionEffects", " ");
-        genConfig.set("dropWeight", "dynamic");
-        genConfig.set("scalability", "scalable");
-        genConfig.set("itemType", "unique");
+            GeneratedFileConfig generatedConfig = new GeneratedFileConfig(generatedFile);
+            FileConfiguration genConfig = generatedConfig.getConfig();
 
-        generatedConfig.saveConfig();
+            genConfig.set("isEnabled", true);
+            genConfig.set("name", randomDisplayName);
+            genConfig.set("material", randomMaterial.toString());
+            genConfig.set("lore", randomLore);
+            genConfig.set("enchantments", randomEnchantments);
+            genConfig.set("potionEffects", " ");
+            genConfig.set("dropWeight", "dynamic");
+            genConfig.set("scalability", "scalable");
+            genConfig.set("itemType", "unique");
+
+            generatedConfig.saveConfig();
+
+        }else{
+            CoreLib.getInstance().getLogger().warning("There has been an error while trying to create the custom item file!");
+        }
 
     }
 
     private static int getNumDuplicateFiles(File folder, String fileName){
         int numDuplicates = 0;
         for(String fName : folder.list()){
-            if(fName.equalsIgnoreCase(fileName)){
+            if(fName.contains(fileName)){
                 numDuplicates++;
             }
         }

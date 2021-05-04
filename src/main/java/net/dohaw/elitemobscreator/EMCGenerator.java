@@ -9,6 +9,7 @@ import net.dohaw.elitemobscreator.config.WordBanksConfig;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentTarget;
 
 import java.io.File;
 import java.io.IOException;
@@ -203,8 +204,14 @@ public class EMCGenerator {
     private static List<Enchantment> getApplicableEnchantments(Material material){
         List<Enchantment> applicableEnchantments = new ArrayList<>();
         for(Enchantment ench : Enchantment.values()){
-            if(ench.getItemTarget().includes(material)){
-                applicableEnchantments.add(ench);
+            if(ench != null){
+                EnchantmentTarget target = ench.getItemTarget();
+                // This for some reason is null on paper servers sometimes (At least I think it's because this plugin was used on a Paper server)
+                if(target != null){
+                    if(target.includes(material)){
+                        applicableEnchantments.add(ench);
+                    }
+                }
             }
         }
         return applicableEnchantments;
